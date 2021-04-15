@@ -5,12 +5,19 @@ require("es6-promise").polyfill();
 require("isomorphic-fetch")
 
 export default function App() {
-    const [data,setData]=useState([]);
+    const initial = JSON.parse(window.localStorage.getItem('data')) || [];
+    const [data,setData]=useState(initial);
+
+    
 
     useEffect(()=>{
         fetch("https://vast-shore-74260.herokuapp.com/banks?city=MUMBAI")
         .then((response)=>response.json())
-        .then((json)=>setData(json))
+        .then((json)=>{setData(json);
+            console.log(JSON.stringify(json));
+            window.localStorage.setItem('data',JSON.stringify(json))})
+        // .then((json)=>console.log(JSON.stringify(json)))
+        // .then((data)=>window.localStorage.setItem('data',JSON.stringify(data)))
     }
     ,[]);
 
