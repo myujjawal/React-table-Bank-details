@@ -4,6 +4,7 @@ import './table.css'
 export const GlobalSearch = ({filter,setFilter})=>{
     return (<>
     <div className='Head'>
+    <h3>Bank Searches</h3>
         <label for="city">Choose a City:</label>
 
         <select name="city" id="city">
