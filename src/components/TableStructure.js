@@ -21,13 +21,15 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
+//Getting selected Rows {object} on clients localStorage or empty object for first time use
+const INITIAL_SELECTED_ROW_IDS = JSON.parse(window.localStorage.getItem('initRows'))||{};
+
 export default function Table({ columns, data }) {
-  // Use the useTable Hook to send the columns and data to build the table
+  
   const {
-    getTableProps, // table props from react-table
-    getTableBodyProps, // table body props from react-table
-    headerGroups, // headerGroups, if your table has groupings
-    // rows, // rows for the table based on the data passed
+    getTableProps, 
+    getTableBodyProps, 
+    headerGroups, 
     page,
     canPreviousPage,
     canNextPage,
@@ -37,13 +39,16 @@ export default function Table({ columns, data }) {
     nextPage,
     previousPage,
     setPageSize,
-    state,
-    // selectedFlatRows,
+    state:{globalFilter,pageIndex, pageSize,selectedRowIds},
     setGlobalFilter,
-    prepareRow // Prepare the row (this function needs to be called for each row before getting the row props)
+    prepareRow 
   } = useTable({
     columns,
     data,
+    initialState: {
+     
+      selectedRowIds: INITIAL_SELECTED_ROW_IDS  
+  }
   },useGlobalFilter,usePagination,useRowSelect,
   hooks => {
     hooks.visibleColumns.push(columns => [
@@ -69,13 +74,12 @@ export default function Table({ columns, data }) {
     ])
   });
 
-  const {globalFilter,pageIndex, pageSize}=state
+  //Creating selected Rows {object} on clients localStorage
+  console.log(selectedRowIds);
+  window.localStorage.setItem('initRows',JSON.stringify(selectedRowIds));
 
   
-  /* 
-    Render the UI for your table
-    - react-table doesn't have UI, it's headless. We just need to put the react-table props from the Hooks, and it will do its magic automatically
-  */
+    // Render the UI for your table
     
   return (
     <>
