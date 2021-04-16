@@ -11,7 +11,7 @@ export default function App() {
     const initial = JSON.parse(window.localStorage.getItem('data')) || []; //Getting data cache on clients localStorage
     const [data,setData]=useState(initial);
     
-    const [city,setCity]=useState("MUMBAI");
+    const [city,setCity]=useState(window.localStorage.getItem('city') || "MUMBAI");
 
     
     //Cached API Call
@@ -22,7 +22,7 @@ export default function App() {
         .then((json)=>{
             setData(json); //Setting the data to state
             window.localStorage.setItem('data',JSON.stringify(json)) //Creating data cache on clients localStorage
-            window.localStorage.setItem('city',JSON.stringify(city))
+            window.localStorage.setItem('city',city)
         })
 
     }
