@@ -57,7 +57,7 @@ export default function App() {
     ],[])
     
 
-
+    console.log('City',city);
     return(<>
         <div className='top'>
         <h1>Bank Searches</h1>
@@ -69,11 +69,11 @@ export default function App() {
         <option value="MUMBAI">Mumbai</option>
         <option value="BANGALORE">Bangalore</option>
         <option value="DELHI">Delhi</option>
-        <option value="PUNE">Pune</option>
+        <option value="PATNA">Patna</option>
         <option value="AGARTALA">Agartala</option>
         </select>
         </div>
 
-        <TableStructure columns={COLUMN} data={data} />
+        <TableStructure columns={COLUMN} data={data} city={city}/>
     </>)
 }

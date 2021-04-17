@@ -20,12 +20,16 @@ const IndeterminateCheckbox = React.forwardRef(
     )
   }
 )
-
+const Favourites={};
 //Getting selected Rows {object} on clients localStorage or empty object for first time use
-const INITIAL_SELECTED_ROW_IDS = JSON.parse(window.localStorage.getItem('initRows'))||{};
+const Fav = JSON.parse(window.localStorage.getItem('Fav'))||{};
+const selectLen=window.localStorage.getItem('changeInSelection');
 
-export default function Table({ columns, data }) {
-  
+console.log(selectLen);
+
+export default function Table({ columns, data,city }) {
+  const INITIAL_SELECTED_ROW_IDS = Fav[city];
+  console.log(INITIAL_SELECTED_ROW_IDS);
   const {
     getTableProps, 
     getTableBodyProps, 
@@ -39,6 +43,7 @@ export default function Table({ columns, data }) {
     nextPage,
     previousPage,
     setPageSize,
+    selectedFlatRows,
     state:{globalFilter,pageIndex, pageSize,selectedRowIds},
     setGlobalFilter,
     prepareRow 
@@ -46,8 +51,8 @@ export default function Table({ columns, data }) {
     columns,
     data,
     initialState: {
-     
-      selectedRowIds: INITIAL_SELECTED_ROW_IDS  
+      
+      selectedRowIds: INITIAL_SELECTED_ROW_IDS  || {}
   }
   },useGlobalFilter,usePagination,useRowSelect,
   hooks => {
@@ -74,10 +79,18 @@ export default function Table({ columns, data }) {
     ])
   });
 
-  //Creating selected Rows {object} on clients localStorage
-  console.log(selectedRowIds);
-  window.localStorage.setItem('initRows',JSON.stringify(selectedRowIds));
+try {
+  if(selectLen==Object.keys(selectedRowIds).length)Favourites[selectedFlatRows[0].original.city] = selectedRowIds;
 
+  //Creating selected Rows {object} on clients localStorage
+  console.log(city===selectedFlatRows[0].original.city,"hey",selectedRowIds,Favourites);
+
+  window.localStorage.setItem('changeInSelection',JSON.stringify(Object.keys(selectedRowIds).length));
+  window.localStorage.setItem('Fav',JSON.stringify(Favourites));
+} catch (error) {
+
+}
+  
   
     // Render the UI for your table
     
