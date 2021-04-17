@@ -5,13 +5,23 @@ import './components/table.css'
 require("es6-promise").polyfill();
 require("isomorphic-fetch")
 
-
+let cityCache={};
+// cityCache.A=[];
 
 export default function App() {
-    const initial = JSON.parse(window.localStorage.getItem('data')) || []; //Getting data cache on clients localStorage
-    const [data,setData]=useState(initial);
-    
     const [city,setCity]=useState(window.localStorage.getItem('city') || "MUMBAI");
+    // const initial = JSON.parse(window.localStorage.getItem('data')) || []; //Getting data cache on clients localStorage
+    const cC = JSON.parse(window.localStorage.getItem('cityCache'))||{};
+
+    
+
+    console.log('getcachecC',cC);
+    cityCache=cC;
+    console.log('citydata',cC[city]);
+    const initData=cC[city]||[];
+    const [data,setData]=useState(initData);
+    
+    
 
     
     //Cached API Call
@@ -22,12 +32,17 @@ export default function App() {
         .then((json)=>{
             setData(json); //Setting the data to state
             window.localStorage.setItem('data',JSON.stringify(json)) //Creating data cache on clients localStorage
-            window.localStorage.setItem('city',city)
+            // window.localStorage.setItem('cityCache',cityCache[city]=[json]);
+            
+            cityCache[city]=json;
+            console.log('setCache',cityCache);
+            window.localStorage.setItem('cityCache',JSON.stringify(cityCache));
+            // console.log('cacheCity',cityCache[city]);
         })
 
     }
     ,[city]);
-
+    
     const COLUMN = useMemo(
         () => [{
         Header :'IFSC',
@@ -56,8 +71,8 @@ export default function App() {
     }
     ],[])
     
-
-    console.log('City',city);
+    // window.localStorage.setItem('cityCache',cityCache[city]=JSON.stringify(data));
+    
     return(<>
         <div className='top'>
         <h1>Bank Searches</h1>
