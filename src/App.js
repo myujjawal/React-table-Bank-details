@@ -17,21 +17,24 @@ export default function App() {
 
     console.log('getcachecC',cC);
     cityCache=cC;
-    console.log('citydata',cC[city]);
+    
     const initData=cC[city]||[];
     const [data,setData]=useState(initData);
-    
-    
-
-    
+ 
     //Cached API Call
     useEffect(()=>{
         // city = setCity(JSON.parse(window.localStorage.getItem('city'))|| "MUMBAI")
-        fetch("https://vast-shore-74260.herokuapp.com/banks?city="+city)
+        if (city in cC) {
+            setData(cC[city]);
+        } else {
+            fetch("https://vast-shore-74260.herokuapp.com/banks?city="+city)
         .then((response)=>response.json())
         .then((json)=>{
+
             setData(json); //Setting the data to state
-            window.localStorage.setItem('data',JSON.stringify(json)) //Creating data cache on clients localStorage
+
+
+            // window.localStorage.setItem('data',JSON.stringify(json)) //Creating data cache on clients localStorage
             // window.localStorage.setItem('cityCache',cityCache[city]=[json]);
             
             cityCache[city]=json;
@@ -39,6 +42,8 @@ export default function App() {
             window.localStorage.setItem('cityCache',JSON.stringify(cityCache));
             // console.log('cacheCity',cityCache[city]);
         })
+        }
+        
 
     }
     ,[city]);
