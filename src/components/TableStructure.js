@@ -100,13 +100,20 @@ export default function Table({ columns, data,city }) {
 Favourites=Fav;
 // const PrevCity=window.localStorage.getItem("PrevCity");
 if(fl===1){
-console.log(selectedFlatRows[0].original.city,selectedRowIds);
+  try {
+    console.log(selectedFlatRows[0].original.city,selectedRowIds);
 
 Favourites[selectedFlatRows[0].original.city] = selectedRowIds;
 window.localStorage.setItem("Favourites",JSON.stringify(Favourites));
 
 
 console.log("setFav",Favourites);
+  } catch (error) {
+    Favourites[city] = {};
+    window.localStorage.setItem("Favourites",JSON.stringify(Favourites));
+
+  }
+
 }
 fl=0;
 console.log(fl);
