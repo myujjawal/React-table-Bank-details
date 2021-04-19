@@ -97,7 +97,7 @@ export default function Table({ columns, data,city }) {
   });
 
 
-
+Favourites=Fav;
 // const PrevCity=window.localStorage.getItem("PrevCity");
 if(fl===1){
 console.log(selectedFlatRows[0].original.city,selectedRowIds);
