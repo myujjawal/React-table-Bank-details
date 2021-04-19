@@ -81,7 +81,7 @@ export default function Table({ columns, data,city }) {
         // to render a checkbox
         Header: ({ getToggleAllPageRowsSelectedProps }) => (
           <div>
-            Favourite<IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
+            Favourite
           </div>
         ),
         // The cell can use the individual row's getToggleRowSelectedProps method
