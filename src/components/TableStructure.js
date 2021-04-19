@@ -3,7 +3,7 @@ import { useTable,useGlobalFilter,usePagination,useRowSelect } from "react-table
 import {GlobalSearch} from "./GlobalSearch"
 import './table.css'
 
-
+let fl=0;
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
     const defaultRef = React.useRef()
@@ -15,21 +15,38 @@ const IndeterminateCheckbox = React.forwardRef(
 
     return (
       <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
+        <input type="checkbox" onClick={(e)=>{
+          fl=1
+          console.log(fl)
+        }} ref={resolvedRef} {...rest} />
       </>
     )
   }
 )
-const Favourites={};
-//Getting selected Rows {object} on clients localStorage or empty object for first time use
-const Fav = JSON.parse(window.localStorage.getItem('Fav'))||{};
-const selectLen=window.localStorage.getItem('changeInSelection');
+let Favourites={};
+// //Getting selected Rows {object} on clients localStorage or empty object for first time use
+const Fav = JSON.parse(window.localStorage.getItem('Favourites'))||{};
 
-console.log(selectLen);
+// // const selectLen=window.localStorage.getItem('changeInSelection');
+console.log("getFav",Fav);
+// const prevCity = JSON.parse(window.localStorage.getItem('setCity'));
+// console.log("prevCity",prevCity);
+
+
+
 
 export default function Table({ columns, data,city }) {
+
+
+
+
+  
   const INITIAL_SELECTED_ROW_IDS = Fav[city];
-  console.log(INITIAL_SELECTED_ROW_IDS);
+  
+  // console.log("loadingRows",INITIAL_SELECTED_ROW_IDS);
+  
+  
+  
   const {
     getTableProps, 
     getTableBodyProps, 
@@ -79,19 +96,22 @@ export default function Table({ columns, data,city }) {
     ])
   });
 
-try {
-  if(selectLen==Object.keys(selectedRowIds).length)Favourites[selectedFlatRows[0].original.city] = selectedRowIds;
 
-  //Creating selected Rows {object} on clients localStorage
-  console.log(city===selectedFlatRows[0].original.city,"hey",selectedRowIds,Favourites);
 
-  window.localStorage.setItem('changeInSelection',JSON.stringify(Object.keys(selectedRowIds).length));
-  window.localStorage.setItem('Fav',JSON.stringify(Favourites));
-} catch (error) {
+// const PrevCity=window.localStorage.getItem("PrevCity");
+if(fl===1){
+console.log(selectedFlatRows[0].original.city,selectedRowIds);
 
+Favourites[selectedFlatRows[0].original.city] = selectedRowIds;
+window.localStorage.setItem("Favourites",JSON.stringify(Favourites));
+
+
+console.log("setFav",Favourites);
 }
-  
-  
+fl=0;
+console.log(fl);
+
+
     // Render the UI for your table
     
   return (

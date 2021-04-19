@@ -7,7 +7,7 @@ require("isomorphic-fetch")
 
 let cityCache={};
 // cityCache.A=[];
-
+let OGcity="MUMBAI";
 export default function App() {
     const [city,setCity]=useState(window.localStorage.getItem('city') || "MUMBAI");
     // const initial = JSON.parse(window.localStorage.getItem('data')) || []; //Getting data cache on clients localStorage
@@ -15,7 +15,7 @@ export default function App() {
 
     
 
-    console.log('getcachecC',cC);
+    // console.log('getcachecC',cC);
     cityCache=cC;
     
     const initData=cC[city]||[];
@@ -28,19 +28,12 @@ export default function App() {
             setData(cC[city]);
         } else {
             fetch("https://vast-shore-74260.herokuapp.com/banks?city="+city)
-        .then((response)=>response.json())
-        .then((json)=>{
+            .then((response)=>response.json())
+            .then((json)=>{
 
             setData(json); //Setting the data to state
-
-
-            // window.localStorage.setItem('data',JSON.stringify(json)) //Creating data cache on clients localStorage
-            // window.localStorage.setItem('cityCache',cityCache[city]=[json]);
-            
             cityCache[city]=json;
-            console.log('setCache',cityCache);
             window.localStorage.setItem('cityCache',JSON.stringify(cityCache));
-            // console.log('cacheCity',cityCache[city]);
         })
         }
         
@@ -84,7 +77,12 @@ export default function App() {
         <label for="city">Choose a City: </label>
 
         <select 
-        onChange={(e) => setCity(e.target.value)}
+        onChange={(e) => {
+            window.localStorage.setItem("PrevCity",JSON.stringify(OGcity));
+            OGcity= e.target.value;
+            setCity(e.target.value);
+            console.log(e.data);
+            }}
         name="city" id="city">
         <option value="MUMBAI">Mumbai</option>
         <option value="BANGALORE">Bangalore</option>
